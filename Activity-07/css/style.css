@@ -1,0 +1,95 @@
+/* This style sets the background color of the header */
+header {
+    background-color: black;  
+}
+
+/* This style sets the text color and alignment for div elements */
+div {
+    color: red;
+    text-align: center;
+    font-size: 1em;
+}
+
+/* This style sets the text color and alignment for ul elements */
+ul {
+    color: black;
+    text-align: center;
+    
+}
+
+/* This style sets the background color and max width for the main section */
+main {
+    background-color: #fffbe6;
+    margin: 20px auto;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 5px 5px 15px gray;
+}
+
+/* This style rounds the corners of the elements with specific IDs */
+#charile-bible, #bodo {
+    border-radius: 15px;
+}
+
+/* This style sets the color for all h1 elements * and use google font Roboto*/
+h1 {
+    color: #FFD700;
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* This style removes the list style and padding for all ul elements */
+ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.1em;
+}
+
+/* This style sets the box shadow for specific images */
+.box-shadow {
+    box-shadow: 5px 5px 15px gray;
+}
+
+/* This style sets the margins for all li elements */
+li {
+    margin: 10px 0;
+}
+
+/* This style adds some padding and border to the ol divs */
+ol div {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Centering the price and recommendation sections */
+.centered-section {
+    text-align: center;
+}
+
+/* This style sets the background color and padding for the footer */
+footer {
+    background-color: rgb(96, 230, 96);
+    text-align: center;
+    padding: 10px;
+}
+
+/* New style for changing the background color of the body */
+body {
+    background-color: #f0f0f0;
+}
+
+/* New style for nav element */
+nav {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* New style for h2 elements */
+h2 {
+    color: #4CAF50;
+    font-size: 1.2em;
+    margin: 20px 0;
+}
