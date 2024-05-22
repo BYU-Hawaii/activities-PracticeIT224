@@ -1,0 +1,88 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+}
+
+
+nav {
+    background-color: #34495e;
+    color: white;
+    padding: 0.5em;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 1em;
+    text-decoration: none;
+}
+
+section {
+    padding: 2em;
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+}
+
+section img {
+    border-radius: 10%;
+    width: 48%;
+    float: left;
+    display: block;
+/* Top and bottom margins are 1em, left and right margins are 1% */
+    margin: 1em 1%; 
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* Certain styles for different sections */
+.introduction {
+    background-color: #ecf0f1;
+}
+
+.Busan {
+    background-color: #fffaf0;
+}
+
+
+.Jamsil {
+    background-color: #f5fffa;
+}
+
+.Namsan {
+    background-color: #fffaf0
+}
+.food {
+    background-color: #f5f5dc;
+}
+
+h1 {
+    color:#e9d7e5;
+    box-shadow: 5px 5px 15px rgb(153, 199, 237);
+    border-radius: 75%;
+} 
+
+h2 {
+    color: #2c3e50;
+    font-family: 'Georgia', serif;
+    text-align: center;  
+}
+
