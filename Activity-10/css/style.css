@@ -1,0 +1,56 @@
+/* Basic styling for the entire page */
+body {
+    font-family: Arial, sans-serif; /* Set font */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
+    background-color: #f4f4f4; /* Set background color */
+    color: #333; /* Set default text color */
+}
+
+/* Styling for the header */
+header {
+    background-color: #007bff; /* Set background color */
+    color: #fff; /* Set text color */
+    padding: 20px; /* Set padding */
+    text-align: center; /* Center align text */
+}
+
+/* Styling for the navigation bar */
+nav ul {
+    list-style: none; /* Remove list styles */
+    padding: 0; /* Remove padding */
+}
+
+nav ul li {
+    display: inline; /* Display inline */
+    margin-right: 20px; /* Set right margin */
+}
+
+/* Styling for the container */
+.container {
+    display: flex; /* Use Flexbox */
+    margin: 20px; /* Set margin */
+}
+
+/* Styling for the columns */
+.column {
+    flex: 1; /* Set Flex ratio */
+    padding: 20px; /* Set padding */
+    background-color: #f8f9fa; /* Set background color */
+}
+
+/* Styling for the image section */
+.image-part {
+    float: left; /* Float left */
+    width: 40%; /* Set width */
+    padding: 20px; /* Set padding */
+}
+
+/* Styling for the footer */
+footer {
+    background-color: #007bff; /* Set background color */
+    color: #fff; /* Set text color */
+    text-align: center; /* Center align text */
+    padding: 20px; /* Set padding */
+    clear: both; /* Clear floats */
+}
