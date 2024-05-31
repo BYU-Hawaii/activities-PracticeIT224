@@ -1,0 +1,37 @@
+/* Basic styling for the grid container */
+.grid-container {
+    display: grid;
+    gap: 20px; /* uniform gaps */
+    grid-template-columns: 1fr 2fr 1fr; /* three columns with unequal widths */
+    grid-template-rows: 1fr 1fr; /* two equal rows */
+    padding: 15px;
+}
+
+/* Styling for grid items */
+.grid-item {
+    background-color: #cce7ff;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #000;
+}
+
+/* Specific placement for grid items */
+.item1 {
+    grid-column: 1 / 2; /* spans the first column */
+    grid-row: 1 / 2;    /* spans the first row */
+}
+
+.item2 {
+    grid-column: 2 / 3; /* spans the second column */
+    grid-row: 1 / 2;    /* spans the first row */
+}
+
+.item3 {
+    grid-column: 3 / 4; /* spans the third column */
+    grid-row: 1 / 2;    /* spans the first row */
+}
+
+.item4 {
+    grid-column: 1 / 4; /* spans all three columns */
+    grid-row: 2 / 3;    /* spans the second row */
+}
