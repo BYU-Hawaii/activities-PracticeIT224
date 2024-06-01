@@ -78,7 +78,7 @@ footer {
   color: gold;
   text-align: center;
 }
-#garden1{  /*	The img selector with specific styles should be added after modifying .garden*/
+#picture{  /*	The img selector with specific styles should be added after modifying .garden*/
   width: 200px;
   border-radius: 25px;
   border: 3px solid red;
