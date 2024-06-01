@@ -63,6 +63,12 @@ main {
   width: 30%; /* Added missing unit to width */
 }
 
+#picture{  /*	The img selector with specific styles should be added after modifying .garden*/
+  width: 200px;
+  border-radius: 25px;
+  border: 3px solid red;
+  box-shadow: 3px 3px 2px grey;
+}
 section {
   margin-top: 30px; /* Corrected margin-top property */
 }
@@ -77,10 +83,4 @@ footer {
   padding: 30px 50px;
   color: gold;
   text-align: center;
-}
-#picture{  /*	The img selector with specific styles should be added after modifying .garden*/
-  width: 200px;
-  border-radius: 25px;
-  border: 3px solid red;
-  box-shadow: 3px 3px 2px grey;
 }
