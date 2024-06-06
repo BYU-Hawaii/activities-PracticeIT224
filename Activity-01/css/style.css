@@ -36,7 +36,7 @@ section {
 }
 
 /* Media query for tablets or smaller laptops */
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
     body {
         font-size: 20px;
     }
@@ -45,5 +45,15 @@ section {
         padding: 15px 30px; /* Adjust button padding */
         font-size: 20px;
     }
-
 }
+
+@media ( min-width: 1024px) {
+    body {
+       font-size: 22px;
+   }
+   button {
+       padding: 20px 40px;
+       font-size: 24px;
+   }
+}
+    
