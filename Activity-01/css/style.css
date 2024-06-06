@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #31bce7;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: #fa0e0e;
+    text-decoration: none;
+}
+
+main {
+    padding: 10px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+/* Media query for tablets or smaller laptops */
+@media screen and (min-width: 768px) {
+    body {
+        font-size: 20px;
+    }
+
+    button {
+        padding: 15px 30px; /* Adjust button padding */
+        font-size: 20px;
+    }
+
+}
