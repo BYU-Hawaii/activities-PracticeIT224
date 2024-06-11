@@ -102,8 +102,7 @@ h2 {
 
 /* Media Queries for Responsive Design */
 
-/* Small Devices (Mobiles) */
-@media (max-width: 599px) {
+@media (max-width: 720px) {
     nav {
         display: block;
     }
@@ -113,66 +112,25 @@ h2 {
         margin: 0.5em 0;
     }
 }
-
-/* Medium Devices (Tablets) */
-@media (min-width: 600px) {
-    section {
-        max-width: 90%;
+@media (min-width: 1024px) {
+    .grid-container {
+        grid-template-areas:
+            "header header"
+            "nav main"
+            "footer footer";
+        grid-template-columns: 200px 1fr;
     }
 
-    section img {
-        width: 48%;
-        float: left;
-        margin: 1em 1%;
-    }
-
-    nav {
-        display: flex;
-        justify-content: center;
-    }
-
-    nav a {
-        margin: 0 2em;
-    }
-}
-
-/* Large Devices (Desktops) */
-@media (min-width: 900px) {
-    body {
+    .nav ul {
         display: flex;
         flex-direction: column;
-        align-items: center;
     }
 
-    header, footer {
-        width: 100%;
+    .nav li {
+        margin-bottom: 10px;
     }
 
-    main {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    nav {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    nav a {
-        margin: 0 2em;
-    }
-
-    section {
-        flex: 1;
-        max-width: 70%;
-        margin: 2em;
-    }
-
-    section img {
-        width: 30%;
-        margin: 1em;
+    .gallery img {
+        width: calc(33.333% - 20px);
     }
 }
