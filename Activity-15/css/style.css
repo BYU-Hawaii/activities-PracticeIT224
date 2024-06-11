@@ -116,7 +116,15 @@ h2 {
 
 @media (min-width: 721px) and (max-width: 1023px) {
     /* Styles for medium devices (tablets) */
-    /* You can add styles for tablet layout here */
+    nav {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    nav a {
+        margin: 0;
+        padding: 0.5em 1em;
+    }
 }
 
 @media (min-width: 1024px) {
