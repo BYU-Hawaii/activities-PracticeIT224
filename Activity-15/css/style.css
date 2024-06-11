@@ -117,36 +117,34 @@ h2 {
 @media (min-width: 721px) and (max-width: 1023px) {
     /* Styles for medium devices (tablets) */
     nav {
-        display: flex;
-        justify-content: space-around;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
     }
 
     nav a {
-        margin: 0;
-        padding: 0.5em 1em;
+        margin: 0.5em;
+        text-align: center; /* 중간 정렬 추가 */
     }
 }
 
 @media (min-width: 1024px) {
     /* Styles for large devices (desktops) */
     .grid-container {
-        grid-template-areas:
-            "header header"
-            "nav main"
-            "footer footer";
-        grid-template-columns: 200px 1fr;
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .nav ul {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
     }
 
     .nav li {
-        margin-bottom: 10px;
+        margin: 0;
     }
 
-    .gallery img {
-        width: calc(33.333% - 20px);
+    .nav a {
+        text-align: center; /* 중간 정렬 추가 */
     }
 }
