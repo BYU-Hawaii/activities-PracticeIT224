@@ -103,6 +103,7 @@ h2 {
 /* Media Queries for Responsive Design */
 
 @media (max-width: 720px) {
+    /* Styles for small devices (mobile) */
     nav {
         display: block;
     }
@@ -112,7 +113,14 @@ h2 {
         margin: 0.5em 0;
     }
 }
+
+@media (min-width: 721px) and (max-width: 1023px) {
+    /* Styles for medium devices (tablets) */
+    /* You can add styles for tablet layout here */
+}
+
 @media (min-width: 1024px) {
+    /* Styles for large devices (desktops) */
     .grid-container {
         grid-template-areas:
             "header header"
