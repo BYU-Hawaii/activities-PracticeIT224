@@ -124,7 +124,7 @@ h2 {
 
     nav a {
         margin: 0.5em;
-        text-align: center; /* 중간 정렬 추가 */
+        text-align: center; 
     }
 }
 
@@ -145,6 +145,6 @@ h2 {
     }
 
     .nav a {
-        text-align: center; /* 중간 정렬 추가 */
+        text-align: center; 
     }
 }
