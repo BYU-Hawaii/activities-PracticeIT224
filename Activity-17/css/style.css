@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.display-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    margin: 20px 0;
+    background-color: #ff0000;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+#colorValue {
+    font-size: 24px; /* Large font size */
+    font-weight: bold; /* Bold font */
+    color: #000; /* Color of the text */
+    position: absolute; /* Position it absolutely within the display area */
+}
+
+.palette-history {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.color-box {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border: 1px solid #ccc;
+}
