@@ -66,24 +66,19 @@ footer {
     }
 }
 
-
 @media (min-width: 1024px) {
     /* Styles for large devices (desktops) */
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .nav ul {
+    nav ul {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         justify-content: center;
     }
 
-    .nav li {
+    nav li {
         margin: 0;
     }
 
-    .nav a {
+    nav a {
         text-align: center; 
     }
 }
