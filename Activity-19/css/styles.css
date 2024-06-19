@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+form {
+    max-width: 600px;
+    margin: auto;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
+}
+
+label {
+    margin-top: 1em;
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+}
+
+button {
+    padding: 0.7em;
+    margin-top: 1em;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 0.3em;
+    color: white;
+    font-size: 1em;
+}
+
+.feedback {
+    color: red;
+    display: none;
+}
+
+.valid-feedback {
+    color: green;
+    display: none;
+}
+
+@media (max-width: 720px) {
+    /* Styles for small devices (mobile) */
+    nav {
+        display: block;
+    }
+
+    nav a {
+        display: block;
+        margin: 0.5em 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Styles for large devices (desktops) */
+    nav ul {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: center;
+    }
+
+    nav li {
+        margin: 0;
+    }
+
+    nav a {
+        text-align: center; 
+    }
+}
