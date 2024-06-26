@@ -1,0 +1,172 @@
+/* Base Styles (Mobile-First) */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    background: linear-gradient(to right, #f3e5f5, #e1f5fe);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header, footer, nav {
+    background: linear-gradient(to right, #607d8b, #78909c);
+    color: white;
+    text-align: center;
+    padding: 1.5em 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+header {
+    border-bottom: 2px solid #f39c12;
+}
+
+nav {
+    margin-bottom: 2em;
+}
+
+nav a {
+    color: white;
+    margin: 0 1em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+nav a:hover {
+    color: #f39c12;
+    transform: scale(1.1);
+}
+
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+    max-width: 90%;
+    margin: 2em auto;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+section img {
+    border-radius: 10px;
+    width: 100%;
+    display: block;
+    margin: 1em 0;
+    transition: transform 0.3s ease;
+}
+
+section img:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+/* Section Background Colors */
+section.introduction, section.Busan, section.Jamsil, section.Namsan, section.food {
+    background-color: #f3e5f5;
+}
+
+h1 {
+    color: #ecf0f1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 2.5em;
+    margin: 0.5em 0;
+}
+
+h2 {
+    color: #2c3e50;
+    font-family: 'Georgia', serif;
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 2em;
+    border-bottom: 2px solid #f39c12;
+    display: inline-block;
+    padding-bottom: 0.5em;
+}
+
+/* Media Queries for Responsive Design */
+@media (min-width: 600px) {
+    section {
+        max-width: 80%;
+    }
+
+    section img {
+        width: 48%;
+        float: left;
+        margin: 1em 1%;
+    }
+
+    nav {
+        display: flex;
+        justify-content: center;
+    }
+
+    nav a {
+        margin: 0 2em;
+    }
+}
+
+@media (min-width: 900px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header, footer {
+        width: 100%;
+    }
+
+    main {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+
+    nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    nav a {
+        margin: 0 2em;
+    }
+
+    section {
+        flex: 1;
+        max-width: 70%;
+        margin: 2em;
+    }
+
+    section img {
+        width: 30%;
+        margin: 1em;
+    }
+}
