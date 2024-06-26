@@ -86,10 +86,6 @@ footer {
     width: 100%;
 }
 
-/* Section Background Colors */
-section.introduction, section.Busan, section.Jamsil, section.Namsan, section.food {
-    background-color: #f3e5f5;
-}
 
 h1 {
     color: #ecf0f1;
