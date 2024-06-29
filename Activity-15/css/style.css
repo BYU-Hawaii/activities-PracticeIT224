@@ -100,10 +100,8 @@ h2 {
     font-size: 2em;
 }
 
-/* Media Queries for Responsive Design */
-
 @media (max-width: 720px) {
-    /* Styles for small devices (mobile) */
+    /* Small devices (mobile phones) */
     nav {
         display: block;
     }
@@ -115,7 +113,7 @@ h2 {
 }
 
 @media (min-width: 721px) and (max-width: 1023px) {
-    /* Styles for medium devices (tablets) */
+    /* Medium devices (tablets) */
     nav {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -129,22 +127,15 @@ h2 {
 }
 
 @media (min-width: 1024px) {
-    /* Styles for large devices (desktops) */
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .nav ul {
+    /* Large devices (desktops) */
+    nav {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         justify-content: center;
     }
 
-    .nav li {
-        margin: 0;
-    }
-
-    .nav a {
+    nav a {
+        margin: 0.5em;
         text-align: center; 
     }
 }
