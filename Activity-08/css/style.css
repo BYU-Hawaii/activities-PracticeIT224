@@ -32,7 +32,6 @@ nav ul.styled-list {
 
 nav ul.styled-list li {
     margin: 0 1em;
-    position: relative;
 }
 
 nav ul.styled-list li::marker {
