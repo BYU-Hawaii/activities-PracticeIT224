@@ -1,14 +1,66 @@
 /* Base Styles (Mobile-First) */
+@keyframes backgroundChange {
+    0% {
+        background: linear-gradient(to right, #f3e5f5, #e1f5fe);
+    }
+    25% {
+        background: linear-gradient(to right, #ffe0b2, #ffccbc);
+    }
+    50% {
+        background: linear-gradient(to right, #c8e6c9, #a5d6a7);
+    }
+    75% {
+        background: linear-gradient(to right, #bbdefb, #90caf9);
+    }
+    100% {
+        background: linear-gradient(to right, #f3e5f5, #e1f5fe);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    background: linear-gradient(to right, #f3e5f5, #e1f5fe);
     color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: backgroundChange 10s infinite alternate ease-in-out;
 }
 
 header, footer, nav {
@@ -16,8 +68,9 @@ header, footer, nav {
     color: white;
     text-align: center;
     padding: 1.5em 0;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
+    animation: slideInFromLeft 1s ease-in-out;
 }
 
 header {
@@ -26,14 +79,18 @@ header {
 
 nav {
     margin-bottom: 2em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 nav a {
     color: white;
-    margin: 0 1em;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s ease, transform 0.3s ease;
+    animation: pulse 2s infinite;
 }
 
 nav a:hover {
@@ -47,6 +104,7 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    animation: fadeIn 1.2s ease-in-out;
 }
 
 section {
@@ -59,14 +117,15 @@ section {
     margin: 2em auto;
     text-align: center;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 section:hover {
     transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 section img {
@@ -74,24 +133,27 @@ section img {
     width: 100%;
     display: block;
     margin: 1em 0;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 section img:hover {
     transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 footer {
-    box-shadow: 0 -4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
+    animation: fadeIn 2s ease-in-out;
 }
-
 
 h1 {
     color: #ecf0f1;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     font-size: 2.5em;
     margin: 0.5em 0;
+    animation: pulse 1.5s infinite;
 }
 
 h2 {
@@ -103,6 +165,7 @@ h2 {
     border-bottom: 2px solid #f39c12;
     display: inline-block;
     padding-bottom: 0.5em;
+    animation: slideInFromLeft 1.5s ease-in-out;
 }
 
 /* Media Queries for Responsive Design */
@@ -118,12 +181,7 @@ h2 {
     }
 
     nav {
-        display: flex;
-        justify-content: center;
-    }
-
-    nav a {
-        margin: 0 2em;
+        gap: 3em;
     }
 }
 
@@ -149,10 +207,6 @@ h2 {
         width: 100%;
         display: flex;
         justify-content: center;
-    }
-
-    nav a {
-        margin: 0 2em;
     }
 
     section {
