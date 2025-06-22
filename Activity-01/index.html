@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Island Voices: Stories of Resistance with Taro Catch Game</title>
+<style>
+  /* Reset */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-image: url('hawaii.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #003049;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* 파도 애니메이션 배경 */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('https://cdn.pixabay.com/photo/2018/10/18/13/52/waves-3752111_1280.png') repeat-x;
+    opacity: 0.15;
+    background-size: contain;
+    animation: waveMove 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes waveMove {
+    0% {background-position-x: 0;}
+    100% {background-position-x: 1500px;}
+  }
+
+  /* 상단 내비게이션 바 */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(0, 121, 107, 0.95);
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem 0;
+    z-index: 1000;
+    font-weight: 600;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  nav a {
+    color: #e0f2f1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  nav a:hover {
+    color: #ffd54f;
+  }
+
+  header {
+    margin-top: 60px; /* nav 높이 만큼 여백 */
+    width: 100%;
+    background: rgba(0, 121, 107, 0.85);
+    color: #e0f2f1;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    backdrop-filter: saturate(180%) blur(10px);
+    z-index: 900;
+    position: relative;
+  }
+
+  main {
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.85);
+    margin: 3rem auto 4rem;
+    padding: 2rem 3rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+  }
+
+  section {
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h2 {
+    color: #00695c;
+    border-bottom: 3px solid #00bfa5;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.2rem;
+    font-family: 'Georgia', serif;
+  }
+
+  p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+  }
+
+  /* 이미지 스타일 */
+  img.story-image, img.cultural-img, img.hula-character {
+    max-width: 100%;
+    border-radius: 16px;
+    margin: 1rem 0 1.5rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* 훌라댄스 흔들림 애니메이션 */
+  .hula-character {
+    animation: sway 3s ease-in-out infinite;
+    transform-origin: center bottom;
+  }
+
+  @keyframes sway {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+  }
+
+  /* 퀴즈 스타일 */
+  button.quiz-btn {
+    background: #00796b;
+    color: #e0f2f1;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  button.quiz-btn:hover {
+    background: #004d40;
+  }
+  .quiz-container {
+    margin-top: 1rem;
+  }
+  .quiz-question {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .quiz-options {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+  .quiz-options li {
+    margin-bottom: 0.7rem;
+  }
+  .quiz-options input[type="radio"] {
+    margin-right: 0.7rem;
+    transform: scale(1.2);
+  }
+  .quiz-result {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-top: 0.8rem;
+  }
+
+  /* footer */
+  footer {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    background: rgba(0, 121, 107, 0.85);
+    color: #e0f2f1;
+    font-size: 0.9rem;
+    position: fixed;
+    bottom: 0;
+    backdrop-filter: saturate(180%) blur(10px);
+    z-index: 999;
+  }
+
+  /* 반응형 */
+  @media (max-width: 640px) {
+    main {
+      margin: 4rem 1rem 6rem;
+      padding: 1.5rem 1.5rem;
+    }
+    nav {
+      gap: 1rem;
+      font-size: 0.9rem;
+    }
+    header {
+      font-size: 2rem;
+      padding: 1rem 1rem;
+    }
+  }
+
+  /* story 섹션 플렉스 박스 */
+  .flex-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .text-content {
+    flex: 1 1 300px;
+  }
+
+  .image-content {
+    flex: 1 1 300px;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 게임 섹션 스타일 */
+  #game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto;
+    max-width: 480px;
+    height: 680px;
+    text-align: center;
+  }
+  #game-container canvas {
+    border: 3px solid #004d40;
+    margin-top: 1rem;
+    display: none; /* 초기 숨김 */
+  }
+  #startBtn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    background: #00796b;
+    color: white;
+    border: none;
+  }
+  #startBtn:hover {
+    background: #004d40;
+  }
+  #gameOverScreen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 2rem;
+    display: none; /* 초기 숨김 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+  }
+  #restartBtn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    background: #00796b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #restartBtn:hover {
+    background: #004d40;
+  }
+  #levelUpText {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    color: #ffeb3b;
+    text-shadow: 1px 1px 4px black;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 11000;
+  }
+</style>
+</head>
+<body>
+
+<!-- 내비게이션 바 -->
+<nav>
+  <a href="#welcome">Welcome</a>
+  <a href="#story">Story</a>
+  <a href="#quiz">Quiz</a>
+  <a href="#culture">Culture</a>
+  <a href="#resources">Resources</a>
+</nav>
+
+<header>
+  Island Voices: Stories of Resistance
+</header>
+
+<main>
+
+  <!-- 1. Main Page: Welcome -->
+  <section id="welcome" class="visible">
+    <h2>Welcome to Island Voices!</h2>
+    <p>
+      This website shares stories about standing up for what is important —  
+      protecting homes, nature, and culture.  
+      Let's explore how Pacific Island people show strength through resistance.
+    </p>
+  </section>
+
+  <!-- 2. Story Page (플렉스 레이아웃) -->
+  <section id="story" class="flex-container visible">
+    <div class="text-content">
+      <h2>Story of Brave Islanders</h2>
+      <p>
+        A long time ago, on a quiet island in the Pacific Ocean, many people lived happily. They loved their home very much — the tall green trees, the blue ocean with colorful fish, and the special songs and dances they shared.
+      </p>
+      <p>
+        One day, some builders came and wanted to cut down the trees and build big buildings. The island people didn’t want to lose their home, so they came together and said, “No, please don’t hurt our island!” They stood quietly and bravely, holding hands and singing their songs to show how much they cared.
+      </p>
+      <p>
+        Because of their courage, the trees stayed tall, the ocean stayed clean, and the island stayed beautiful. Now, children and their children can enjoy this special place, just like before.
+      </p>
+    </div>
+    <div class="image-content">
+      <img src="Tropical island.jpg" alt="Tropical island" class="story-image" />
+    </div>
+  </section>
+
+  <!-- 3. Quiz -->
+  <section id="quiz">
+    <h2>Try the Quiz!</h2>
+    <div class="quiz-container">
+      <div class="quiz-question" id="quiz-question">Question 1: What does resistance mean?</div>
+      <ul class="quiz-options" id="quiz-options">
+        <li><label><input type="radio" name="quiz" value="1"> Giving up when things get hard</label></li>
+        <li><label><input type="radio" name="quiz" value="2"> Trying to stop something bad from happening</label></li>
+        <li><label><input type="radio" name="quiz" value="3"> Doing nothing and ignoring problems</label></li>
+      </ul>
+      <button class="quiz-btn" onclick="nextQuestion()">Next</button>
+      <div class="quiz-result" id="quiz-result"></div>
+    </div>
+  </section>
+
+  <!-- 4. Culture -->
+  <section id="culture">
+    <h2>Learn About Our Traditions</h2>
+    <img src="lei.jpg" alt="Lei making" class="cultural-img hula-character" />
+    <p>
+     The lei is a traditional flower necklace that holds deep meaning in many Pacific Island cultures. It represents love, respect, and community. In the Taro Catch Game, the lei acts as a protective shield power-up, symbolizing the strength and support found in Pacific Island traditions. Wearing a lei shows honor and connection to others, which helps players feel resilient against challenges like pollution and harm in the game.
+
+The lei is important because it reminds us of the cultural values that unite Pacific Island communities. It encourages respect for nature and each other, which is essential for protecting their land, heritage, and way of life.
+    </p>
+  </section>
+
+  <!-- 5. Game Section -->
+  <section id="game-container">
+    <h2>Play the Taro Catch Game!</h2>
+    <button id="startBtn">Start Game</button>
+    <canvas id="gameCanvas" width="480" height="640"></canvas>
+    <div id="gameOverScreen">
+      Game Over!<br />
+      <button id="restartBtn">Restart</button>
+    </div>
+    <div id="levelUpText">Level Up!</div>
+  </section>
+
+  <!-- 6. Resources -->
+  <section id="resources">
+    <h2>Resources for Parents and Teachers</h2>
+    <ul>
+      <li><a href="https://www.polynesia.com" target="_blank" rel="noopener">Polynesian Cultural Center</a></li>
+      <li><a href="https://www.forumsec.org" target="_blank" rel="noopener">Pacific Islands Forum Secretariat</a></li>
+      <li><a href="https://www.noaa.gov/education/resource-collections/ocean-coasts-education-resources" target="_blank" rel="noopener">NOAA Ocean Education</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  © 2025 Pacific Learning Initiative
+</footer>
+
+<script>
+  // 스크롤 시 섹션 애니메이션 활성화
+  function onScroll() {
+    const sections = document.querySelectorAll('main section');
+    const triggerBottom = window.innerHeight * 0.85;
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top < triggerBottom) {
+        section.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', onScroll);
+  window.addEventListener('load', onScroll);
+
+  // 퀴즈 기능
+  const questions = [
+    {
+      question: "What does resistance mean?",
+      options: [
+        "Giving up when things get hard",
+        "Trying to stop something bad from happening",
+        "Doing nothing and ignoring problems"
+      ],
+      answer: 1
+    },
+    {
+      question: "Who protects the island’s nature and culture?",
+      options: [
+        "The islanders",
+        "The developers",
+        "Tourists"
+      ],
+      answer: 0
+    },
+    {
+      question: "How did the islanders stand up?",
+      options: [
+        "By fighting with weapons",
+        "By peacefully saying no",
+        "By leaving the island"
+      ],
+      answer: 1
+    },
+    {
+      question: "What did the developers want to do?",
+      options: [
+        "Build and change the island",
+        "Help protect the forests",
+        "Teach island traditions"
+      ],
+      answer: 0
+    },
+    {
+      question: "Why is it important to protect the island?",
+      options: [
+        "So the island stays beautiful for future generations",
+        "To make the island bigger",
+        "To let the developers build more"
+      ],
+      answer: 0
+    }
+  ];
+  let currentQuestion = 0;
+  function loadQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById('quiz-question').textContent = `Question ${currentQuestion + 1}: ${q.question}`;
+    const optionsList = document.getElementById('quiz-options');
+    optionsList.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<label><input type="radio" name="quiz" value="${i}"> ${opt}</label>`;
+      optionsList.appendChild(li);
+    });
+    document.getElementById('quiz-result').textContent = '';
+  }
+  function nextQuestion() {
+    const options = document.getElementsByName('quiz');
+    let selectedValue = null;
+    for (const option of options) {
+      if (option.checked) {
+        selectedValue = parseInt(option.value);
+        break;
+      }
+    }
+    const result = document.getElementById('quiz-result');
+    if (selectedValue === null) {
+      result.textContent = 'Please select an answer first!';
+      result.style.color = '#d32f2f';
+      return;
+    }
+    if (selectedValue === questions[currentQuestion].answer) {
+      result.textContent = 'Correct!';
+      result.style.color = '#2e7d32';
+    } else {
+      result.textContent = 'Oops, that\'s not quite right.';
+      result.style.color = '#d32f2f';
+    }
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      setTimeout(() => {
+        loadQuestion();
+      }, 1500);
+    } else {
+      setTimeout(() => {
+        result.textContent = 'Quiz completed! Great job!';
+        document.querySelector('button.quiz-btn').style.display = 'none';
+      }, 1500);
+    }
+  }
+  loadQuestion();
+
+  // ======== 게임 스크립트 시작 ========
+
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const gameOverScreen = document.getElementById('gameOverScreen');
+  const restartBtn = document.getElementById('restartBtn');
+  const levelUpText = document.getElementById('levelUpText');
+  const startBtn = document.getElementById('startBtn');
+
+  // 픽셀 배경 설정
+  const pixelSize = 10;
+
+  const clouds = [
+    { startX: 5, startY: 3, pattern: [
+      0b0011111000,
+      0b0111111100,
+      0b1111111110,
+      0b1111111111,
+      0b0111111100,
+      0b0011111000
+    ]},
+    { startX: 25, startY: 5, pattern: [
+      0b000111100,
+      0b001111110,
+      0b011111111,
+      0b011111111,
+      0b001111100
+    ]},
+    { startX: 40, startY: 4, pattern: [
+      0b01111110,
+      0b11111111,
+      0b11111111,
+      0b01111110
+    ]}
+  ];
+
+  function isCloudPixel(x, y) {
+    for(let cloud of clouds) {
+      let relX = x - cloud.startX;
+      let relY = y - cloud.startY;
+      if(relY >= 0 && relY < cloud.pattern.length) {
+        let row = cloud.pattern[relY];
+        if(relX >= 0 && relX < row.toString(2).length) {
+          let bit = (row >> (row.toString(2).length - 1 - relX)) & 1;
+          if(bit === 1) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function drawPixel(x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+  }
+
+  function drawBackground() {
+    const rows = canvas.height / pixelSize;
+    const cols = canvas.width / pixelSize;
+
+    for(let y=0; y<rows; y++) {
+      for(let x=0; x<cols; x++) {
+        if (isCloudPixel(x, y)) {
+          drawPixel(x, y, '#ffffff'); // 흰 구름 픽셀
+          continue;
+        }
+        if(y < 15) {
+          drawPixel(x, y, '#7ec8e3'); // 하늘색
+        } else if(y < 35) {
+          let blues = ['#52a8d9', '#3a90d1', '#2f7fc4', '#3a90d1'];
+          let color = blues[(x + y) % blues.length];
+          drawPixel(x, y, color);
+        } else {
+          let sands = ['#f2e2b6', '#f3e5bc', '#f5e9bf'];
+          let color = sands[(x + y) % sands.length];
+          drawPixel(x, y, color);
+        }
+      }
+    }
+  }
+
+  // 게임 이미지
+  const characterImg = new Image();
+  characterImg.src = 'lani.png';
+
+  const taroImg = new Image();
+  taroImg.src = 'taro.png';
+
+  const trashImg = new Image();
+  trashImg.src = 'trash.png';
+
+  const bubbleImg = new Image();
+  bubbleImg.src = 'bubble.png';
+
+  const leiImg = new Image();
+  leiImg.src = 'lei.png';
+
+  const player = {
+    x: canvas.width / 2 - 32,
+    y: canvas.height - 128,
+    width: 64,
+    height: 64,
+    speed: 6,
+    health: 100,
+    healthDrainTimer: 0,
+    healthDrainInterval: 60,
+    doubleScoreActive: false,
+    doubleScoreTimer: 0,
+    shieldActive: false,
+    shieldTimer: 0,
+  };
+
+  const items = [];
+  let score = 0;
+  let fallSpeed = 2;
+  let speedIncreaseTimer = 0;
+  let gameOver = false;
+  let gameStarted = false;
+
+  let level = 1;
+  const levelUpScores = [50, 150, 300, 500]; // 레벨업 기준 점수
+
+  const keys = {};
+  window.addEventListener('keydown', e => keys[e.key] = true);
+  window.addEventListener('keyup', e => keys[e.key] = false);
+
+  let spawnInterval = 1000;
+  let spawnIntervalId;
+
+  function spawnItem() {
+    let rand = Math.random();
+    let type = 'taro';
+    let size = 40;
+    if(rand < 0.05) {
+      type = 'doubleScore';
+      size = 40;
+    } else if(rand < 0.10) {
+      type = 'shield';
+      size = 40;
+    } else if(rand < 0.6) {
+      type = 'taro';
+      size = 40;
+    } else {
+      type = 'trash';
+      size = 50;
+    }
+    items.push({
+      x: Math.random() * (canvas.width - size),
+      y: -size,
+      width: size,
+      height: size,
+      type: type,
+      speed: fallSpeed + Math.random(),
+    });
+  }
+
+  function startSpawning() {
+    spawnIntervalId = setInterval(() => {
+      if(!gameOver) spawnItem();
+    }, spawnInterval);
+  }
+
+  function resetGame() {
+    score = 0;
+    fallSpeed = 2;
+    speedIncreaseTimer = 0;
+    spawnInterval = 1000;
+    clearInterval(spawnIntervalId);
+    player.x = canvas.width / 2 - 32;
+    player.y = canvas.height - 128;
+    player.health = 100;
+    player.healthDrainTimer = 0;
+    player.healthDrainInterval = 60;
+    player.doubleScoreActive = false;
+    player.doubleScoreTimer = 0;
+    player.shieldActive = false;
+    player.shieldTimer = 0;
+    items.length = 0;
+    gameOver = false;
+    gameOverScreen.style.display = 'none';
+  }
+
+  function update() {
+    if(gameOver || !gameStarted) return;
+
+    if(keys['ArrowLeft']) player.x -= player.speed;
+    if(keys['ArrowRight']) player.x += player.speed;
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+
+    player.healthDrainTimer++;
+    if(player.healthDrainTimer >= player.healthDrainInterval) {
+      player.health -= 1;
+      player.healthDrainTimer = 0;
+      if(player.healthDrainInterval > 15) player.healthDrainInterval -= 1;
+    }
+
+    if(player.doubleScoreActive) {
+      player.doubleScoreTimer--;
+      if(player.doubleScoreTimer <= 0) player.doubleScoreActive = false;
+    }
+    if(player.shieldActive) {
+      player.shieldTimer--;
+      if(player.shieldTimer <= 0) player.shieldActive = false;
+    }
+
+    for(let i = items.length - 1; i >= 0; i--) {
+      items[i].y += items[i].speed;
+
+      if(
+        items[i].x < player.x + player.width &&
+        items[i].x + items[i].width > player.x &&
+        items[i].y < player.y + player.height &&
+        items[i].y + items[i].height > player.y
+      ) {
+        switch(items[i].type) {
+          case 'taro':
+            score += player.doubleScoreActive ? 20 : 10;
+            player.health = Math.min(100, player.health + 15);
+            break;
+          case 'doubleScore':
+            player.doubleScoreActive = true;
+            player.doubleScoreTimer = 600;
+            break;
+          case 'shield':
+            player.shieldActive = true;
+            player.shieldTimer = 600;
+            break;
+          case 'trash':
+            if(!player.shieldActive) {
+              player.health -= 25;
+              score -= 15;
+            }
+            break;
+        }
+        items.splice(i, 1);
+      } else if(items[i].y > canvas.height) {
+        items.splice(i, 1);
+      }
+    }
+
+    speedIncreaseTimer++;
+
+    // 점수에 따른 레벨업 처리
+    if(level < levelUpScores.length && score >= levelUpScores[level-1]) {
+      level++;
+      showLevelUp();
+      // 난이도 증가
+      fallSpeed += 1;
+      if(spawnInterval > 300) {
+        spawnInterval -= 150;
+        clearInterval(spawnIntervalId);
+        startSpawning();
+      }
+    }
+
+    // 게임오버 즉시 처리
+    if(player.health <= 0) {
+      player.health = 0; // 체력 음수 방지
+      gameOver = true;
+    }
+  }
+
+  // 레벨업 텍스트 표시 함수
+  function showLevelUp() {
+    levelUpText.style.opacity = '1';
+    setTimeout(() => {
+      levelUpText.style.opacity = '0';
+    }, 1500);
+  }
+
+  function drawHeart(x, y, size, fillRatio) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(size / 100, size / 100);
+    ctx.beginPath();
+    ctx.moveTo(50, 15);
+    ctx.bezierCurveTo(35, 0, 0, 25, 50, 75);
+    ctx.bezierCurveTo(100, 25, 65, 0, 50, 15);
+    ctx.closePath();
+    ctx.strokeStyle = '#d32f2f';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    if(fillRatio > 0) {
+      ctx.clip();
+      ctx.fillStyle = '#d32f2f';
+      ctx.fillRect(0, 0, 100 * fillRatio, 100);
+    }
+    ctx.restore();
+  }
+
+  function drawHearts() {
+    const maxHearts = 5;
+    const healthPerHeart = 20;
+    for(let i=0; i<maxHearts; i++) {
+      let heartHealth = Math.min(Math.max(player.health - i * healthPerHeart, 0), healthPerHeart);
+      let fillRatio = heartHealth / healthPerHeart;
+      drawHeart(20 + i*40, 60, 30, fillRatio);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 픽셀 배경 먼저 그림
+    drawBackground();
+
+    // 바닥
+    ctx.fillStyle = '#2e8b57';
+    ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+    ctx.imageSmoothingEnabled = false;
+
+    if(characterImg.complete) {
+      ctx.drawImage(characterImg, player.x, player.y, player.width, player.height);
+    } else {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    items.forEach(item => {
+      if(item.type === 'taro' && taroImg.complete) {
+        ctx.drawImage(taroImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'doubleScore' && bubbleImg.complete) {
+        ctx.drawImage(bubbleImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'shield' && leiImg.complete) {
+        ctx.drawImage(leiImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'trash' && trashImg.complete) {
+        ctx.drawImage(trashImg, item.x, item.y, item.width, item.height);
+      }
+    });
+
+    ctx.fillStyle = '#003049';
+    ctx.font = '24px Arial';
+    ctx.fillText(`Score: ${score}`, 20, 40);
+
+    ctx.fillStyle = '#00796b';
+    ctx.font = '24px Arial';
+    ctx.fillText(`Level: ${level}`, 360, 40);
+
+    drawHearts();
+
+    if(player.doubleScoreActive) {
+      ctx.fillStyle = '#00796b';
+      ctx.font = '20px Arial';
+      ctx.fillText('Double Score!', 20, 110);
+    }
+    if(player.shieldActive) {
+      ctx.fillStyle = '#00796b';
+      ctx.font = '20px Arial';
+      ctx.fillText('Shield Active!', 20, 140);
+    }
+  }
+
+  function gameLoop() {
+    if(!gameStarted) return;
+
+    update();
+    draw();
+    if(!gameOver) {
+      requestAnimationFrame(gameLoop);
+    } else {
+      clearInterval(spawnIntervalId);
+      showGameOver();
+    }
+  }
+
+  function showGameOver() {
+    gameOverScreen.style.display = 'flex';
+  }
+
+  startBtn.addEventListener('click', () => {
+    startBtn.style.display = 'none';
+    canvas.style.display = 'block';
+    gameStarted = true;
+    resetGame();
+    startSpawning();
+    gameLoop();
+  });
+
+  restartBtn.addEventListener('click', () => {
+    gameOverScreen.style.display = 'none';
+    resetGame();
+    startSpawning();
+    gameLoop();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Taro Catch Game with Hearts & Pixel Art Background</title>
+<style>
+  body {
+    margin: 0;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+  }
+  canvas {
+    border: 3px solid #004d40;
+    display: block;
+  }
+  #gameOverScreen {
+    position: fixed;
+    top: 0; left: 0; right:0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+  }
+  #restartBtn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    background: #00796b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #restartBtn:hover {
+    background: #004d40;
+  }
+  #levelUpText {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    color: #ffeb3b;
+    text-shadow: 1px 1px 4px black;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    z-index: 1100;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gameCanvas" width="480" height="640"></canvas>
+<div id="levelUpText">Level Up!</div>
+
+<div id="gameOverScreen">
+  Game Over!<br />
+  <button id="restartBtn">Restart</button>
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const gameOverScreen = document.getElementById('gameOverScreen');
+  const restartBtn = document.getElementById('restartBtn');
+  const levelUpText = document.getElementById('levelUpText');
+
+  // 픽셀 배경 설정
+  const pixelSize = 10;
+
+  const clouds = [
+    { startX: 5, startY: 3, pattern: [
+      0b0011111000,
+      0b0111111100,
+      0b1111111110,
+      0b1111111111,
+      0b0111111100,
+      0b0011111000
+    ]},
+    { startX: 25, startY: 5, pattern: [
+      0b000111100,
+      0b001111110,
+      0b011111111,
+      0b011111111,
+      0b001111100
+    ]},
+    { startX: 40, startY: 4, pattern: [
+      0b01111110,
+      0b11111111,
+      0b11111111,
+      0b01111110
+    ]}
+  ];
+
+  function isCloudPixel(x, y) {
+    for(let cloud of clouds) {
+      let relX = x - cloud.startX;
+      let relY = y - cloud.startY;
+      if(relY >= 0 && relY < cloud.pattern.length) {
+        let row = cloud.pattern[relY];
+        if(relX >= 0 && relX < row.toString(2).length) {
+          let bit = (row >> (row.toString(2).length - 1 - relX)) & 1;
+          if(bit === 1) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function drawPixel(x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+  }
+
+  function drawBackground() {
+    const rows = canvas.height / pixelSize;
+    const cols = canvas.width / pixelSize;
+
+    for(let y=0; y<rows; y++) {
+      for(let x=0; x<cols; x++) {
+        if (isCloudPixel(x, y)) {
+          drawPixel(x, y, '#ffffff'); // 흰 구름 픽셀
+          continue;
+        }
+        if(y < 15) {
+          drawPixel(x, y, '#7ec8e3'); // 하늘색
+        } else if(y < 35) {
+          let blues = ['#52a8d9', '#3a90d1', '#2f7fc4', '#3a90d1'];
+          let color = blues[(x + y) % blues.length];
+          drawPixel(x, y, color);
+        } else {
+          let sands = ['#f2e2b6', '#f3e5bc', '#f5e9bf'];
+          let color = sands[(x + y) % sands.length];
+          drawPixel(x, y, color);
+        }
+      }
+    }
+  }
+
+  // 게임 이미지
+  const characterImg = new Image();
+  characterImg.src = 'lani.png';
+
+  const taroImg = new Image();
+  taroImg.src = 'taro.png';
+
+  const trashImg = new Image();
+  trashImg.src = 'trash.png';
+
+  const bubbleImg = new Image();
+  bubbleImg.src = 'bubble.png';
+
+  const leiImg = new Image();
+  leiImg.src = 'lei.png';
+
+  const player = {
+    x: canvas.width / 2 - 32,
+    y: canvas.height - 128,
+    width: 64,
+    height: 64,
+    speed: 6,
+    health: 100,
+    healthDrainTimer: 0,
+    healthDrainInterval: 60,
+    doubleScoreActive: false,
+    doubleScoreTimer: 0,
+    shieldActive: false,
+    shieldTimer: 0,
+  };
+
+  const items = [];
+  let score = 0;
+  let fallSpeed = 2;
+  let speedIncreaseTimer = 0;
+  let gameOver = false;
+
+  let level = 1;
+  const levelUpScores = [50, 150, 300, 500]; // 레벨업 기준 점수
+
+  const keys = {};
+  window.addEventListener('keydown', e => keys[e.key] = true);
+  window.addEventListener('keyup', e => keys[e.key] = false);
+
+  let spawnInterval = 1000;
+  let spawnIntervalId;
+
+  function spawnItem() {
+    let rand = Math.random();
+    let type = 'taro';
+    let size = 40;
+    if(rand < 0.05) {
+      type = 'doubleScore';
+      size = 40;
+    } else if(rand < 0.10) {
+      type = 'shield';
+      size = 40;
+    } else if(rand < 0.6) {
+      type = 'taro';
+      size = 40;
+    } else {
+      type = 'trash';
+      size = 50;
+    }
+    items.push({
+      x: Math.random() * (canvas.width - size),
+      y: -size,
+      width: size,
+      height: size,
+      type: type,
+      speed: fallSpeed + Math.random(),
+    });
+  }
+
+  function startSpawning() {
+    spawnIntervalId = setInterval(() => {
+      if(!gameOver) spawnItem();
+    }, spawnInterval);
+  }
+
+  characterImg.onload = () => {
+    startSpawning();
+    gameLoop();
+  };
+
+  function update() {
+    if(gameOver) return;
+
+    if(keys['ArrowLeft']) player.x -= player.speed;
+    if(keys['ArrowRight']) player.x += player.speed;
+    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+
+    player.healthDrainTimer++;
+    if(player.healthDrainTimer >= player.healthDrainInterval) {
+      player.health -= 1;
+      player.healthDrainTimer = 0;
+      if(player.healthDrainInterval > 15) player.healthDrainInterval -= 1;
+    }
+
+    if(player.doubleScoreActive) {
+      player.doubleScoreTimer--;
+      if(player.doubleScoreTimer <= 0) player.doubleScoreActive = false;
+    }
+    if(player.shieldActive) {
+      player.shieldTimer--;
+      if(player.shieldTimer <= 0) player.shieldActive = false;
+    }
+
+    for(let i = items.length - 1; i >= 0; i--) {
+      items[i].y += items[i].speed;
+
+      if(
+        items[i].x < player.x + player.width &&
+        items[i].x + items[i].width > player.x &&
+        items[i].y < player.y + player.height &&
+        items[i].y + items[i].height > player.y
+      ) {
+        switch(items[i].type) {
+          case 'taro':
+            score += player.doubleScoreActive ? 20 : 10;
+            player.health = Math.min(100, player.health + 15);
+            break;
+          case 'doubleScore':
+            player.doubleScoreActive = true;
+            player.doubleScoreTimer = 600;
+            break;
+          case 'shield':
+            player.shieldActive = true;
+            player.shieldTimer = 600;
+            break;
+          case 'trash':
+            if(!player.shieldActive) {
+              player.health -= 25;
+              score -= 15;
+            }
+            break;
+        }
+        items.splice(i, 1);
+      } else if(items[i].y > canvas.height) {
+        items.splice(i, 1);
+      }
+    }
+
+    speedIncreaseTimer++;
+
+    // 점수에 따른 레벨업 처리
+    if(level < levelUpScores.length && score >= levelUpScores[level-1]) {
+      level++;
+      showLevelUp();
+      // 난이도 증가
+      fallSpeed += 1;
+      if(spawnInterval > 300) {
+        spawnInterval -= 150;
+        clearInterval(spawnIntervalId);
+        startSpawning();
+      }
+    }
+
+    // 게임오버 즉시 처리
+    if(player.health <= 0) {
+      player.health = 0; // 체력 음수 방지
+      gameOver = true;
+    }
+  }
+
+  // 레벨업 텍스트 표시 함수
+  function showLevelUp() {
+    levelUpText.style.opacity = '1';
+    setTimeout(() => {
+      levelUpText.style.opacity = '0';
+    }, 1500);
+  }
+
+  function drawHeart(x, y, size, fillRatio) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(size / 100, size / 100);
+    ctx.beginPath();
+    ctx.moveTo(50, 15);
+    ctx.bezierCurveTo(35, 0, 0, 25, 50, 75);
+    ctx.bezierCurveTo(100, 25, 65, 0, 50, 15);
+    ctx.closePath();
+    ctx.strokeStyle = '#d32f2f';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    if(fillRatio > 0) {
+      ctx.clip();
+      ctx.fillStyle = '#d32f2f';
+      ctx.fillRect(0, 0, 100 * fillRatio, 100);
+    }
+    ctx.restore();
+  }
+
+  function drawHearts() {
+    const maxHearts = 5;
+    const healthPerHeart = 20;
+    for(let i=0; i<maxHearts; i++) {
+      let heartHealth = Math.min(Math.max(player.health - i * healthPerHeart, 0), healthPerHeart);
+      let fillRatio = heartHealth / healthPerHeart;
+      drawHeart(20 + i*40, 60, 30, fillRatio);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 픽셀 배경 먼저 그림
+    drawBackground();
+
+    // 바닥
+    ctx.fillStyle = '#2e8b57';
+    ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+    ctx.imageSmoothingEnabled = false;
+
+    if(characterImg.complete) {
+      ctx.drawImage(characterImg, player.x, player.y, player.width, player.height);
+    } else {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    items.forEach(item => {
+      if(item.type === 'taro' && taroImg.complete) {
+        ctx.drawImage(taroImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'doubleScore' && bubbleImg.complete) {
+        ctx.drawImage(bubbleImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'shield' && leiImg.complete) {
+        ctx.drawImage(leiImg, item.x, item.y, item.width, item.height);
+      } else if(item.type === 'trash' && trashImg.complete) {
+        ctx.drawImage(trashImg, item.x, item.y, item.width, item.height);
+      }
+    });
+
+    ctx.fillStyle = '#003049';
+    ctx.font = '24px Arial';
+    ctx.fillText(`Score: ${score}`, 20, 40);
+
+    ctx.fillStyle = '#00796b';
+    ctx.font = '24px Arial';
+    ctx.fillText(`Level: ${level}`, 360, 40);
+
+    drawHearts();
+
+    if(player.doubleScoreActive) {
+      ctx.fillStyle = '#00796b';
+      ctx.font = '20px Arial';
+      ctx.fillText('Double Score!', 20, 110);
+    }
+    if(player.shieldActive) {
+      ctx.fillStyle = '#00796b';
+      ctx.font = '20px Arial';
+      ctx.fillText('Shield Active!', 20, 140);
+    }
+  }
+
+  function gameLoop() {
+    update();
+    draw();
+    if(!gameOver) {
+      requestAnimationFrame(gameLoop);
+    } else {
+      // 게임 종료 시 스폰 멈춤
+      clearInterval(spawnIntervalId);
+      showGameOver();
+    }
+  }
+
+  function showGameOver() {
+    gameOverScreen.style.display = 'flex';
+  }
+
+  restartBtn.addEventListener('click', () => {
+    score = 0;
+    fallSpeed = 2;
+    speedIncreaseTimer = 0;
+    spawnInterval = 1000;
+    clearInterval(spawnIntervalId);
+    player.x = canvas.width / 2 - 32;
+    player.y = canvas.height - 128;
+    player.health = 100;
+    player.healthDrainTimer = 0;
+    player.healthDrainInterval = 60;
+    player.doubleScoreActive = false;
+    player.doubleScoreTimer = 0;
+    player.shieldActive = false;
+    player.shieldTimer = 0;
+    items.length = 0;
+    gameOver = false;
+    gameOverScreen.style.display = 'none';
+    startSpawning();
+    gameLoop();
+  });
+</script>
+
+</body>
+</html>
